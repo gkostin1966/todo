@@ -12,8 +12,8 @@ js/todo.js: lib/todo.rb
 
 gh-pages-js:
 	git push --delete origin gh-pages
-	git subtree push --prefix app_js origin gh-pages
+	git subtree push --prefix client/app_js origin gh-pages
 
 gh-pages-rb:
 	git push --delete origin gh-pages
-	git subtree push --prefix app_rb origin gh-pages
+	git subtree push --prefix client/app_rb origin gh-pages
