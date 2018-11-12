@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opal/0.3.43/opal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opal-parser/0.3.43/opal-parser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opal-jquery/0.0.8/opal-jquery.min.js"></script>
+</head>
+<body>
+<h1>Ruby Demo</h1>
+<div id="demo">
+    <h2>Let AJAX change this text</h2>
+    <button id="ajax" type="button">Change Content</button>
+</div>
+
+    <script type="text/ruby">
+        Document.ready? do
+            Element.find('#ajax').on :click do |event|
+                div_demo = Element.find('#demo')
+                HTTP.get('ajax_info.txt') do |response|
+                    if response.ok?
+                        div_demo.text(response.body)
+                    else
+                        div_demo.text(response.inspect)
+                    end
+                end
+            end
+        end
+    </script>
+
+</body>
+</html>
