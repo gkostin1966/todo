@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/opal/0.3.43/opal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/opal-parser/0.3.43/opal-parser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/opal-jquery/0.0.8/opal-jquery.min.js"></script>
+<meta charset="utf-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/opal/0.3.43/opal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/opal-parser/0.3.43/opal-parser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/opal-jquery/0.0.8/opal-jquery.min.js"></script>
+<script src="https://api.trello.com/1/client.js?key=b0473f906d17235dffd2a0f40d2faddb"></script>
 </head>
 <body>
 <h1>Ruby Demo</h1>
@@ -14,20 +15,74 @@
     <button id="ajax" type="button">Change Content</button>
 </div>
 
-    <script type="text/ruby">
-        Document.ready? do
-            Element.find('#ajax').on :click do |event|
-                div_demo = Element.find('#demo')
-                HTTP.get('ajax_info.txt') do |response|
-                    if response.ok?
-                        div_demo.text(response.body)
-                    else
-                        div_demo.text(response.inspect)
-                    end
+<script type="text/ruby">
+    require 'native'
+
+    Document.ready? do
+        Element.find('#ajax').on :click do |event|
+            div_demo = Element.find('#demo')
+            HTTP.get('ajax_info.txt') do |response|
+                if response.ok?
+                    div_demo.text(response.body)
+                else
+                    div_demo.text(response.inspect)
                 end
             end
         end
-    </script>
 
+        class Trello
+            def initialize
+                @trello = Native(`Trello`)
+            end
+
+            def version
+                @trello.version
+            end
+
+            def authentication_success
+                puts 'Successful authentication'
+            end
+
+            def authentication_failure
+                puts 'Failed authentication'
+            end
+
+            def authorize
+                @trello.authorize({
+                    type: 'popup',
+                    name: 'Getting Started Application',
+                    scope: {
+                        read: 'true',
+                        write: 'true' },
+                    expiration: 'never',
+                    success: `function(){ self.$authentication_success() }`,
+                    error: `function(){ self.$authentication_failure() }`
+                })
+            end
+
+            def creation_success(data)
+                puts 'Card created successfully.'
+                puts "data #{data}"
+                puts `JSON.stringify(data, null, 2)`
+            end
+
+            def new_card
+                list = '5be618c7f0ee00436df7217a'
+                card = {
+                    name: 'Opal Ruby',
+                    desc: 'This is the description of our new card.',
+                    idList: list,
+                    pos: 'top'
+                }
+                @trello.post('/cards/', card, `function(data){ self.$creation_success(data) }`)
+            end
+        end
+
+        trello = Trello.new
+        puts "Trello Version #{trello.version}"
+        trello.authorize
+        trello.new_card
+    end
+</script>
 </body>
 </html>

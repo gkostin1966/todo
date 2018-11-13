@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://api.trello.com/1/client.js?key=b0473f906d17235dffd2a0f40d2faddb"></script>
 <head>
-    <meta charset="utf-8">
+<meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://api.trello.com/1/client.js?key=b0473f906d17235dffd2a0f40d2faddb"></script>
 </head>
 <body>
 <h1>Javascript Demo</h1>
@@ -57,7 +57,7 @@
   };
 
   var newCard = {
-    name: 'New Test Card',
+    name: 'Client Side Javascript',
     desc: 'This is the description of our new card.',
     // Place this card at the top of our list
     idList: myList,
@@ -66,7 +66,7 @@
 
   window.Trello.post('/cards/', newCard, creationSuccess);
 
-  window.Trello.put('/cards/5beac63fe8cb65558be45a4e', {name: 'Card Test New'});
+  // window.Trello.put('/cards/5beac63fe8cb65558be45a4e', {name: 'Card Test New'});
 </script>
 
 </body>

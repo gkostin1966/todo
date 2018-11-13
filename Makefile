@@ -23,17 +23,16 @@ gh-pages-js-rb: dist
 	git push --delete origin gh-pages
 	git subtree push --prefix dist origin gh-pages
 
-dist: dist/ajax_info.txt dist/ajax.js dist/index.html
+dist: dist/ajax_info.txt dist/index.html dist/index.js
 	@echo distribution up-to-date
 
 dist/ajax_info.txt: src/ajax_info.txt
 	cp src/ajax_info.txt dist/ajax_info.txt
 
-dist/ajax.js: src/ajax.js.rb
+dist/index.js: src/index.js.rb
 	bundle exec opal --compile \
 	--gem opal-jquery \
-	--include node_modules/jquery/dist \
-	src/ajax.js.rb > dist/ajax.js
+	src/index.js.rb > dist/index.js
 
 dist/index.html: src/index.html
 	cp src/index.html dist/index.html
