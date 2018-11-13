@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://api.trello.com/1/client.js?key=b0473f906d17235dffd2a0f40d2faddb"></script>
 <head>
     <meta charset="utf-8">
 </head>
@@ -25,6 +27,46 @@
     xhttp.open("GET", "ajax_info.txt", true);
     xhttp.send();
   }
+</script>
+
+<script>
+  var authenticationSuccess = function() {
+    console.log('Successful authentication');
+  };
+
+  var authenticationFailure = function() {
+    console.log('Failed authentication');
+  };
+
+  window.Trello.authorize({
+    type: 'popup',
+    name: 'Getting Started Application',
+    scope: {
+      read: 'true',
+      write: 'true' },
+    expiration: 'never',
+    success: authenticationSuccess,
+    error: authenticationFailure
+  });
+
+  var myList = '5be618c7f0ee00436df7217a';
+
+  var creationSuccess = function (data) {
+    console.log('Card created successfully.');
+    console.log(JSON.stringify(data, null, 2));
+  };
+
+  var newCard = {
+    name: 'New Test Card',
+    desc: 'This is the description of our new card.',
+    // Place this card at the top of our list
+    idList: myList,
+    pos: 'top'
+  };
+
+  window.Trello.post('/cards/', newCard, creationSuccess);
+
+  window.Trello.put('/cards/5beac63fe8cb65558be45a4e', {name: 'Card Test New'});
 </script>
 
 </body>
